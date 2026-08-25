@@ -6,10 +6,9 @@ export class ProductPage {
 
     constructor(page:Page) {
         this.page = page
-        this.productTitle = page.locator('#Products')
+        this.productTitle = page.locator('.title')
     }
 
-    // TODO: Fix this
     async verifyProductPage() {
         await expect(this.productTitle).toHaveText('Products')
     }

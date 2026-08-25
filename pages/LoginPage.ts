@@ -5,12 +5,14 @@ export class LoginPage {
     readonly username: Locator
     readonly password: Locator
     readonly login_button: Locator
+    readonly error_message: Locator
 
     constructor(page:Page) {
         this.page = page
         this.username = page.locator('#user-name')
         this.password = page.locator('#password')
         this.login_button = page.locator('#login-button')
+        this.error_message = page.locator('[data-test="error"]')
     }
 
     async goto(){
@@ -21,5 +23,10 @@ export class LoginPage {
         await this.username.fill(username)
         await this.password.fill(password)
         await this.login_button.click()
+    }
+
+    async errorMessage(expectedError: string){
+        await expect(this.error_message).toBeVisible()
+        await expect(this.error_message).toHaveText(expectedError)
     }
 }

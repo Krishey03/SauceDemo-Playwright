@@ -19,6 +19,10 @@ export class LoginPage {
         await this.page.goto('https://www.saucedemo.com/')
     }
 
+    async assertLoginPage(){
+        await expect(this.username).toBeVisible()
+    }
+
     async login(username: string, password: string){
         await this.username.fill(username)
         await this.password.fill(password)

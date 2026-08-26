@@ -50,6 +50,7 @@ test.describe('Check login for various users', () => {
             const loginPage = new LoginPage (page)
 
             await loginPage.goto()
+            await loginPage.assertLoginPage()
             await loginPage.login(username, password)
             
             if(shouldSucceed){

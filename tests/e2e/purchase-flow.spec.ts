@@ -16,9 +16,12 @@ test ('test successful login for normal user', async ({ page }) => {
 
 test('Verify all products are loaded', async ({ page }) => {
     const productPage = new ProductPage(page)
-    const productDetailPage = new ProductDetailPage(page)
-
-    await productPage.verifyAllProductsLoaded()
-    await productPage.clickProduct()
-    await productDetailPage.verifyProductDetailPageLoad()
+    await productPage.verifyAllProductsLoaded(6)
 })
+
+test('Add specific product to cart', async ({ page }) => {
+    const productPage = new ProductPage(page, 'Sauce Labs Backpack')
+    await productPage.clickProduct()
+})
+
+

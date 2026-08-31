@@ -4,13 +4,17 @@ export class ProductPage {
     readonly page: Page
     readonly productTitle: Locator
     readonly productItems: Locator
-    readonly specificItem: Locator
+    readonly specificItem?: Locator
 
-    constructor(page:Page, productName: string) {
+    constructor(page:Page, productName?: string) {
         this.page = page
         this.productTitle = page.locator('.title')
         this.productItems = page.locator('.inventory_item')
-        this.specificItem = page.getByText(`[data-test="inventory-item"]:has-text("${productName}`)
+
+        if (productName){
+            this.specificItem = page.getByText(`[data-test="inventory-item"]:has-text("${productName}")`)
+        }
+        
     }
 
     async verifyProductPage() {
@@ -21,7 +25,15 @@ export class ProductPage {
         await expect(this.productItems).toHaveCount(expected)
     }
 
-    async clickProduct(){
+    async clickProductByName(productName: string){
+        const product = this.page.locator(`[data-test="inventory-item"]:has-text("${productName}")`)
+        await product.click()
+    }
+
+    async clickProduct() {
+        if (!this.specificItem) {
+            throw new Error('No product specified. clickProductByName() instead.')
+        }
         await this.specificItem.click()
     }
 }

@@ -21,7 +21,7 @@ export class ProductDetailPage {
         await this.addToCartBtn.click()
     }
 
-    async verifyBadgeCount(expectedCounter: number){
-        await expect(this.cartBadge).toHaveText(expectedCounter.toString())
+    async verifyBadgeCount(expectedCount: number){
+        await expect(this.cartBadge).toHaveText(expectedCount.toString())
     }
 }

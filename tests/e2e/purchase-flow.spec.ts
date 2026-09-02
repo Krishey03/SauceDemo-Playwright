@@ -3,28 +3,34 @@ import { LoginPage } from "../../pages/LoginPage"
 import { ProductPage } from "../../pages/ProductPage";
 import { ProductDetailPage } from "../../pages/ProductDetailPage";
 import { test } from '@playwright/test';
+import { NavComponent } from "../../pages/components/Nav";
+import { CartPage } from "../../pages/CartPage";
 
-test.describe('e2e test', () => {
-    test.beforeEach(async ({ page }) => {
-        const loginPage = new LoginPage(page)
-        await loginPage.goto()
-        await loginPage.login('standard_user', 'secret_sauce')
-    })
+test('Complete e2e test', async ({ page }) => {
+    const loginPage = new LoginPage(page)
+    await loginPage.goto()
+    await loginPage.login('standard_user', 'secret_sauce')
 
-    test ('Verify product page Loaded', async ({ page }) => {
-        const productPage = new ProductPage(page)
-        await productPage.verifyProductPage()
-    })
-
-    test('Verify product load', async ({ page }) => {
-        const productPage = new ProductPage(page)
-        await productPage.verifyProductLoadForClick()
-    })
-
-    test('Add specific product to cart', async ({ page }) => {
     const productPage = new ProductPage(page)
+    await productPage.verifyProductPage()
+    await productPage.verifyProductLoadForClick()
+
     await productPage.clickProductByName('Sauce Labs Backpack')
-    })
+
+    const productDetailPage = new ProductDetailPage(page)
+    await productDetailPage.verifyProductDetailPageLoad()
+
+    await productDetailPage.clickAddToCart()
+
+    await productDetailPage.verifyBadgeCount(1)
+
+    const navComponent = new NavComponent(page)
+    await navComponent.clickCartIcon()
+
+    const cartPage = new CartPage(page)
+    await cartPage.verifyCartPageLoad()
+
+    await cartPage.clickCheckoutBtn()
 })
 
 

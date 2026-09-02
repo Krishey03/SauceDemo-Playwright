@@ -9,7 +9,7 @@ export class ProductDetailPage {
     constructor(page:Page) {
         this.page = page
         this.addToCartBtn = page.locator('[id="add-to-cart"]')
-        this.verifyProductDetailPage = page.locator('.inventory_details_name.large_size')
+        this.verifyProductDetailPage = page.locator('[data-test="back-to-products"]')
         this.cartBadge = page.locator('.shopping_cart_badge')
     }
 

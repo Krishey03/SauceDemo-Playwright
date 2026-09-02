@@ -22,14 +22,8 @@ export class ProductPage {
     }
 
     async clickProductByName(productName: string){
-        const product = this.page.locator(`[data-test="inventory-item"]:has-text("${productName}")`)
+        const product = this.page.locator(`[data-test="inventory-item-name"]:has-text("${productName}")`)
+        await expect(product).toBeVisible()
         await product.click()
-    }
-
-    async clickProduct() {
-        if (!this.specificItem) {
-            throw new Error('No product specified. clickProductByName() instead.')
-        }
-        await this.specificItem.click()
     }
 }

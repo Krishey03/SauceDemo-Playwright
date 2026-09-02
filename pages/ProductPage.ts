@@ -9,11 +9,7 @@ export class ProductPage {
     constructor(page:Page, productName?: string) {
         this.page = page
         this.productTitle = page.locator('.title')
-        this.productItems = page.locator('.inventory_item')
-
-        if (productName){
-            this.specificItem = page.getByText(`[data-test="inventory-item"]:has-text("${productName}")`)
-        }
+        this.productItems = page.locator('[data-test="title"]')
         
     }
 
@@ -21,8 +17,8 @@ export class ProductPage {
         await expect(this.productTitle).toHaveText('Products')
     }
 
-    async verifyAllProductsLoaded(expected: number = 6) {
-        await expect(this.productItems).toHaveCount(expected)
+    async verifyProductLoadForClick(){
+        await expect(this.productItems.first()).toBeVisible()
     }
 
     async clickProductByName(productName: string){

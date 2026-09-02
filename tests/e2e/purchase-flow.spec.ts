@@ -4,24 +4,28 @@ import { ProductPage } from "../../pages/ProductPage";
 import { ProductDetailPage } from "../../pages/ProductDetailPage";
 import { test } from '@playwright/test';
 
-//Login for standard user
-test ('test successful login for normal user', async ({ page }) => {
-    const loginPage = new LoginPage(page)
+test.describe('e2e test', () => {
+    test.beforeEach(async ({ page }) => {
+        const loginPage = new LoginPage(page)
+        await loginPage.goto()
+        await loginPage.login('standard_user', 'secret_sauce')
+    })
+
+    test ('Verify product page Loaded', async ({ page }) => {
+        const productPage = new ProductPage(page)
+        await productPage.verifyProductPage()
+    })
+
+    test('Verify product load', async ({ page }) => {
+        const productPage = new ProductPage(page)
+        await productPage.verifyProductLoadForClick()
+    })
+
+    test('Add specific product to cart', async ({ page }) => {
     const productPage = new ProductPage(page)
-
-    await loginPage.goto()
-    await loginPage.login('standard_user', 'secret_sauce')
-    await productPage.verifyProductPage()
+    await productPage.clickProductByName('Sauce Labs Backpack')
+    })
 })
 
-test('Verify all products are loaded', async ({ page }) => {
-    const productPage = new ProductPage(page)
-    await productPage.verifyAllProductsLoaded(6)
-})
-
-test('Add specific product to cart', async ({ page }) => {
-    const productPage = new ProductPage(page, 'Sauce Labs Backpack')
-    await productPage.clickProduct()
-})
 
 

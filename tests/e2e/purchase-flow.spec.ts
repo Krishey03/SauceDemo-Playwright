@@ -5,6 +5,9 @@ import { ProductDetailPage } from "../../pages/ProductDetailPage";
 import { test } from '@playwright/test';
 import { NavComponent } from "../../pages/components/Nav";
 import { CartPage } from "../../pages/CartPage";
+import { CheckoutPageStepTwo } from "../../pages/CheckoutStepTwoPage";
+import { CheckoutPageStepThree } from "../../pages/CheckoutStepThreePage";
+import { CheckoutCompletePage } from "../../pages/CheckourCompletePage";
 
 test('Complete e2e test', async ({ page }) => {
     const loginPage = new LoginPage(page)
@@ -29,8 +32,22 @@ test('Complete e2e test', async ({ page }) => {
 
     const cartPage = new CartPage(page)
     await cartPage.verifyCartPageLoad()
-
     await cartPage.clickCheckoutBtn()
+
+    const checkoutPageStepTwo = new CheckoutPageStepTwo(page)
+    await checkoutPageStepTwo.verifyCheckoutStepOnePage()
+    await checkoutPageStepTwo.fillInputFields('Fname', 'LName', '102909')
+    await checkoutPageStepTwo.clickContinueBtn()
+
+    const checkoutPageStepThree = new CheckoutPageStepThree(page)
+    await checkoutPageStepThree.verifyCheckoutStepTwoPage()
+    await checkoutPageStepThree.clickFinishBtn()
+
+    const checkoutCompletePage = new CheckoutCompletePage(page)
+    await checkoutCompletePage.verifyCheckoutCompletePageLoad()
+    await checkoutCompletePage.clickBacktoHomeBtn()
+
+    await productPage.verifyProductPage()
 })
 
 

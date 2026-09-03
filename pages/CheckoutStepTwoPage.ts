@@ -1,35 +1,34 @@
 import { Page, Locator, expect } from '@playwright/test'
 
-export class CheckoutPageStepTwo{
-    readonly page: Page
-    readonly pageTitle: Locator
-    readonly firstNameField: Locator
-    readonly lastNameField: Locator
-    readonly postalCodeField: Locator
-    readonly continueBtn: Locator
-    
-    constructor(page:Page){
-        this.page = page
-        this.pageTitle = page.locator('[data-test="title"]')
-        this.firstNameField = page.locator('[data-test="firstName"]')
-        this.lastNameField = page.locator('[data-test="lastName"]')
-        this.postalCodeField = page.locator('[data-test="postalCode"]')
-        this.continueBtn = page.locator('[data-test="continue"]')
-    }
+export class CheckoutPageStepTwo {
+   readonly page: Page
+   readonly pageTitle: Locator
+   readonly productTitle: Locator
+   readonly productDesc: Locator
+   readonly productPrice: Locator
+   readonly finishBtn: Locator
 
-    async verifyCheckoutStepOnePage() {
-        await expect(this.pageTitle).toHaveText('Checkout: Your Information')
-    }
+      constructor(page:Page){
+         this.page = page
+         this.pageTitle = page.locator('[data-test="title"]')
+         this.productTitle = page.locator('[data-test="inventory-item-name"]')
+         this.productDesc = page.locator('[data-test="inventory-item-desc"]')
+         this.productPrice = page.locator('[data-test="inventory-item-price"]')
+         this.finishBtn = page.locator('[data-test="finish"]')
+      }
 
-    async fillInputFields(FName: string, LName: string, PCode: string) {
-        await this.firstNameField.fill(FName)
-        await this.lastNameField.fill(LName)
-        await this.postalCodeField.fill(PCode)
-    }
+      async verifyCheckoutStepTwoPage() {
+         await expect(this.pageTitle).toHaveText('Checkout: Overview')
+      }
 
-    async clickContinueBtn() {
-        await expect(this.continueBtn).toBeVisible()
-        await this.continueBtn.click()
-    }
+      async verifyCheckOutContent(productName:string, productDesc: string, productPrice: string){
+         await expect(this.productTitle).toHaveText(productName)
+         await expect(this.productDesc).toHaveText(productDesc)
+         await expect(this.productPrice).toHaveText(productPrice)
+      }
 
+      async clickFinishBtn() {
+         await expect(this.finishBtn).toBeVisible()
+         await this.finishBtn.click()
+      }
 }

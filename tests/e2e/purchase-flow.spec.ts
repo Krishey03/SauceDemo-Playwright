@@ -31,6 +31,7 @@ test('Complete e2e test', async ({ page }) => {
     const productPage = new ProductPage(page)
     await productPage.verifyProductPage()
     await productPage.verifyAllProducts(products.allProducts)
+    await productPage.addAllProductToCart()
     await productPage.clickProductByName(firstproduct.name)
 
     //Product Detail Page

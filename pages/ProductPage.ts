@@ -39,6 +39,16 @@ export class ProductPage {
         }
     }
 
+    async addAllProductToCart() {
+        const addButton = this.page.locator('[data-test="inventory-item"]:has-text("Add to cart")')
+        const count = await addButton.count()
+
+        for (let i = 0; i < count; i++) {
+            const buttons = this.page.locator('[data-test="inventory-item"]:has-text("Add to cart")')
+            await buttons.nth(i).click()
+        }
+    }
+
     async clickProductByName(productName: string){
         const product = this.productItem.filter({ hasText: productName })
         await expect(product).toBeVisible()

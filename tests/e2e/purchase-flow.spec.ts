@@ -10,6 +10,9 @@ import { CheckoutPageStepThree } from "../../pages/CheckoutStepThreePage";
 import { CheckoutCompletePage } from "../../pages/CheckourCompletePage";
 
 test('Complete e2e test', async ({ page }) => {
+
+    const productName = 'Sauce Labs Backpack'
+
     const loginPage = new LoginPage(page)
     await loginPage.goto()
     await loginPage.login('standard_user', 'secret_sauce')
@@ -18,7 +21,7 @@ test('Complete e2e test', async ({ page }) => {
     await productPage.verifyProductPage()
     await productPage.verifyProductLoadForClick()
 
-    await productPage.clickProductByName('Sauce Labs Backpack')
+    await productPage.clickProductByName(productName)
 
     const productDetailPage = new ProductDetailPage(page)
     await productDetailPage.verifyProductDetailPageLoad()

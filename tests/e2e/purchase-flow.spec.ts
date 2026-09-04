@@ -23,11 +23,6 @@ test('Complete e2e test', async ({ page }) => {
     const problem_user = users.problemUser
 
     const firstproduct = products.allProducts[0]
-    const secondproduct = products.allProducts[1]
-    const thirdproduct = products.allProducts[2]
-    const fourthproduct = products.allProducts[3]
-    const fifthproduct = products.allProducts[4]
-    const sixthproduct = products.allProducts[5]
 
 
     //Login

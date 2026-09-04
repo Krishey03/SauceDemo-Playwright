@@ -40,13 +40,10 @@ export class ProductPage {
     }
 
     async addAllProductToCart() {
-        const addButton = this.page.locator('[data-test="inventory-item"]:has-text("Add to cart")')
-        const count = await addButton.count()
-
-        for (let i = 0; i < count; i++) {
-            const buttons = this.page.locator('[data-test="inventory-item"]:has-text("Add to cart")')
-            await buttons.nth(i).click()
+        while (await this.page.locator('[data-test^="add-to-cart-"]:has-text("Add to cart")').count() > 0) {
+            await this.page.locator('[data-test^="add-to-cart-"]:has-text("Add to cart")').first().click()
         }
+
     }
 
     async clickProductByName(productName: string){

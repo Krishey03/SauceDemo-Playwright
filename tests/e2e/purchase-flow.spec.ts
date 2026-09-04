@@ -19,13 +19,21 @@ test('Complete e2e test', async ({ page }) => {
         postalCode: faker.location.zipCode('######')
     }
 
-    const user = users.standardUser
+    const standard_user = users.standardUser
+    const problem_user = users.problemUser
+
     const firstproduct = products.allProducts[0]
+    const secondproduct = products.allProducts[1]
+    const thirdproduct = products.allProducts[2]
+    const fourthproduct = products.allProducts[3]
+    const fifthproduct = products.allProducts[4]
+    const sixthproduct = products.allProducts[5]
+
 
     //Login
     const loginPage = new LoginPage(page)
     await loginPage.goto()
-    await loginPage.login(user.username, user.password)
+    await loginPage.login(standard_user.username, standard_user.password)
 
     //Product Page
     const productPage = new ProductPage(page)
@@ -37,19 +45,27 @@ test('Complete e2e test', async ({ page }) => {
     //Product Detail Page
     const productDetailPage = new ProductDetailPage(page)
     await productDetailPage.verifyProductDetailPageLoad()
-    await productDetailPage.verifyProductDetailContents(firstproduct.name, firstproduct.description, firstproduct.price)
 
-    await productDetailPage.clickAddToCart()
-    await productDetailPage.verifyBadgeCount(1)
+    for (const product of products.allProducts) {
+        await productPage.clickProductByName(product.name)
+        await productDetailPage.verifyProductDetailContents(
+            product.name, product.description, product.price
+        )
+        await productDetailPage.clickBackToProducts()
+    }
 
     //Cart Navigation
     const navComponent = new NavComponent(page)
+    await navComponent.verifyBadgeCount(6)
     await navComponent.clickCartIcon()
-
+    
     //Cart Page
     const cartPage = new CartPage(page)
     await cartPage.verifyCartPageLoad()
-    await cartPage.verifyCartContent(firstproduct.name, firstproduct.description, firstproduct.price)
+
+    for (const product of products.allProducts){
+        await cartPage.verifyCartContent(product.name, product.description, product.price)
+    }
     await cartPage.clickCheckoutBtn()
 
     //Checkout Page Step 1
@@ -65,7 +81,9 @@ test('Complete e2e test', async ({ page }) => {
     //Checkout Page Step 2
     const checkoutPageStepTwo = new CheckoutPageStepTwo(page)
     await checkoutPageStepTwo.verifyCheckoutStepTwoPage()
-    await checkoutPageStepTwo.verifyCheckOutContent(firstproduct.name, firstproduct.description, firstproduct.price)
+    for (const product of products.allProducts){
+        await checkoutPageStepTwo.verifyCheckOutContent(product.name, product.description, product.price)
+    }
     await checkoutPageStepTwo.clickFinishBtn()
 
     //Checkout Page Complete

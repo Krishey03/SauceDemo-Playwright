@@ -9,6 +9,11 @@
         "password": "secret_sauce"
     },
 
+    "problemUser": {
+        "username": "problem_user",
+        "password": "secret_sauce"
+    },
+
     "performanceUser": {
         "username": "performance_glitch_user",
         "password": "secret_sauce"

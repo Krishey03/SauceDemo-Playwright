@@ -4,10 +4,10 @@ export class ProductDetailPage {
     readonly page: Page
     readonly verifyProductDetailPage: Locator
     readonly addToCartBtn: Locator
-    readonly cartBadge: Locator
     readonly productTitle: Locator
     readonly productDesc: Locator
     readonly productPrice: Locator
+    readonly backToProductsBtn: Locator
 
     
     constructor(page:Page) {
@@ -17,7 +17,7 @@ export class ProductDetailPage {
         this.productTitle = page.locator('[data-test="inventory-item-name"]')
         this.productDesc = page.locator('[data-test="inventory-item-desc"]')
         this.productPrice = page.locator('[data-test="inventory-item-price"]')
-        this.cartBadge = page.locator('.shopping_cart_badge')
+        this.backToProductsBtn = page.locator('[data-test="back-to-products"]')
     }
 
     async verifyProductDetailPageLoad(){
@@ -34,7 +34,9 @@ export class ProductDetailPage {
         await this.addToCartBtn.click()
     }
 
-    async verifyBadgeCount(expectedCount: number){
-        await expect(this.cartBadge).toHaveText(expectedCount.toString())
+    async clickBackToProducts() {
+        await expect(this.backToProductsBtn).toBeVisible()
+        await this.backToProductsBtn.click()
     }
+
 }

@@ -23,9 +23,11 @@ export class CartPage {
     }
 
     async verifyCartContent(productName:string, productDesc: string, productPrice: string){
-        await expect(this.productTitle).toHaveText(productName)
-        await expect(this.productDesc).toHaveText(productDesc)
-        await expect(this.productPrice).toHaveText(productPrice)
+        const cart_item = this.page.locator('.cart_item', { hasText: productName})
+
+        await expect(cart_item.locator('[data-test="inventory-item-name"]')).toHaveText(productName)
+        await expect(cart_item.locator('[data-test="inventory-item-desc"]')).toHaveText(productDesc)
+        await expect(cart_item.locator('[data-test="inventory-item-price"]')).toHaveText(productPrice)
     }
 
     async clickCheckoutBtn() {

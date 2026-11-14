@@ -15,6 +15,7 @@ The test suite follows the **Page Object Model (POM)** design pattern to ensure 
 - [Project Structure](#project-structure)
 - [Test Scenarios](#test-scenarios)
 - [Running Tests](#running-tests)
+- [Docker](#docker)
 - [Best Practices](#best-practices)
 
 ---
@@ -130,6 +131,61 @@ npx playwright test --debug
 npx playwright show-report
 ```
 
+
+## Docker
+
+The image is built on `mcr.microsoft.com/playwright:v1.62.1-noble`. The image tag
+and the `@playwright/test` version in `package.json` / `package-lock.json` must
+always match, because the image ships only the browser builds for its own
+Playwright release. The Dockerfile fails the build if they drift apart.
+
+Build the image:
+
+```bash
+docker build -t playwright-tests:latest .
+```
+
+Run the full suite:
+
+```bash
+docker run --init --ipc=host --rm playwright-tests:latest
+```
+
+Run a subset with CI retries and copy the HTML report out of the container:
+
+```bash
+docker run --init --ipc=host --rm -e CI=true \
+  -v "$PWD/playwright-report:/app/playwright-report" \
+  playwright-tests:latest npx playwright test tests/e2e --project=chromium
+```
+
+### Why `--init`
+
+Without an init process, `npx playwright test` runs as PID 1. PID 1 does not
+get the kernel's default signal handling (no automatic reaping of orphaned
+child processes, and `SIGTERM` from `docker stop` is not forwarded to the
+children Playwright spawned). `--init` injects a tiny init (tini) that reaps
+zombie browser/driver processes and forwards signals, so the suite starts
+cleanly and stops promptly.
+
+### Why `--ipc=host`
+
+Chromium uses `/dev/shm` as shared memory for its renderer processes. Docker
+caps `/dev/shm` at 64 MB by default, which makes Chromium renderers crash
+mid-test and surfaces as `Target page, context or browser has been closed` or
+`Failed to start browser process`. `--ipc=host` lets the container use the
+host's IPC namespace, removing the cap. If you cannot share the host IPC
+namespace, use `--shm-size=2gb` instead.
+
+### Notes
+
+- The container runs as `pwuser` (non-root), which keeps Chromium's sandbox
+  enabled. Do not run it as root unless you also pass `--no-sandbox` via
+  Playwright launch options; that disables a key security boundary.
+- `-e CI=true` enables the CI behaviour already defined in
+  `playwright.config.ts` (2 retries, 1 worker, `forbidOnly`).
+- Test artifacts (`test-results/`, `playwright-report/`) are written inside the
+  container; mount a volume if you need them after the container exits.
 
 ## Best Practices
 #### 1. Page Object Model

@@ -1,0 +1,31 @@
+# Dependencies are installed inside the image (npm ci), never copied in.
+node_modules
+npm-debug.log*
+
+# Local test output / caches must not be baked into the image.
+test-results
+playwright-report
+blob-report
+playwright/.cache
+playwright/.auth
+*.trace.zip
+
+# Git metadata and CI config are not needed at runtime.
+.git
+.gitignore
+.github
+
+# Never bake local secrets into an image layer.
+.env
+.env.*
+!.env.example
+
+# Editor / OS noise.
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# Build files are not needed inside the image.
+Dockerfile
+.dockerignore

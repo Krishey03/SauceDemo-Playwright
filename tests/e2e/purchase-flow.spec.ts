@@ -45,7 +45,7 @@ test('Complete e2e test', async ({ page }) => {
         await productPage.clickProductByName(product.name)
         await productDetailPage.verifyProductDetailContents(
             product.name, product.description, product.price
-        )
+        ) ///
         await productDetailPage.clickBackToProducts()
     }
 
